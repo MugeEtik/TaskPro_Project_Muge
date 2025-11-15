@@ -1,0 +1,1384 @@
+{
+	"info": {
+		"_postman_id": "d5c3ed66-b43d-4181-b84c-ba48365ecd1b",
+		"name": "GoIT_QA_Manuel_Project_Müge",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "48145982",
+		"_collection_link": "https://mugeetik-6806369.postman.co/workspace/M%C3%BCge-Etik-(MayBells)'s-Workspac~9554370b-8470-4f91-835c-c6637dea8264/collection/48145982-d5c3ed66-b43d-4181-b84c-ba48365ecd1b?action=share&source=collection_link&creator=48145982"
+	},
+	"item": [
+		{
+			"name": "API_Temel-kullanıcı-yönetimi",
+			"item": [
+				{
+					"name": "TC_08.001  Geçerli Verilerle Başarılı Kullanıcı Kaydı",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201 Created\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Rastgele bir kullanıcı adı ve alan adı oluşturma\r",
+									"const randomUsername = `maybells89${Math.floor(Math.random() * 100000)}`;\r",
+									"const randomDomain = 'mail.com'; // Veya kendi test domaininiz\r",
+									"\r",
+									"// Oluşturulan e-posta adresini bir Postman değişkenine kaydetme\r",
+									"const newEmail = `${randomUsername}@${randomDomain}`;\r",
+									"pm.environment.set(\"random_email\", newEmail);\r",
+									"\r",
+									"// Konsola yazdırarak e-postanın doğru oluşturulduğunu kontrol etme\r",
+									"console.log(`Using email: ${newEmail}`);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"muge\",\r\n    \"email\": \"maybells890@mail.com\",\r\n    \"password\": \"lms*258.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURI}}user/register",
+							"host": [
+								"{{baseURI}}user"
+							],
+							"path": [
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_08.002  Geçersiz Verilerle Kayıt Hata Mesajı",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400 Missing fields in request body\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"M\",\r\n  \"email\": \"dmail.com\",\r\n  \"password\": \" \"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURI}}user/register",
+							"host": [
+								"{{baseURI}}user"
+							],
+							"path": [
+								"register"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_08.003  Kayıtlı E-posta ile Kayıt Denemesi",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 409 Conflict\", function () {\r",
+									"    pm.response.to.have.status(409);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body contains 'Email in use' message\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    pm.expect(responseData.message).to.eql(\"Email in use\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Muge Etik\",\r\n  \"email\": \"mugeetik@gmail.com\",\r\n  \"password\": \"arc1649*\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURI}}user/register",
+							"host": [
+								"{{baseURI}}user"
+							],
+							"path": [
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_09.001  Geçerli Verilerle Başarılı Giriş",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body contains 'Successful login' message\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    pm.expect(responseData.message).to.eql(\"Successful login\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"mugeetik@gmail.com\",\r\n  \"password\": \"arc1649*\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURI}}user/login",
+							"host": [
+								"{{baseURI}}user"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_09.002  Geçersiz Verilerle Giriş Hata Mesajı",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400 Missing fields in request body\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"M\",\r\n  \"email\": \"dmail.com\",\r\n  \"password\": \" \"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURI}}user/login",
+							"host": [
+								"{{baseURI}}user"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_10.001  Token Yenileme",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"pm.test(\"Status code is 200 Successful refresh\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YjA1Njc1ZmFhZjlkMWVkMTA2OWYzMCIsImlhdCI6MTc1ODE4NzYyNCwiZXhwIjoxNzU5Mzk3MjI0fQ.P0j48ktfKf-l45CKFLe5DAKvZPwXl1OKZ1QWJxbkSbw\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURI}}user/refresh",
+							"host": [
+								"{{baseURI}}user"
+							],
+							"path": [
+								"refresh"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_11.001  Google Hesabı ile Kayıt",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YjA1Njc1ZmFhZjlkMWVkMTA2OWYzMCIsImlhdCI6MTc1ODE5MTIwOCwiZXhwIjoxNzU4MTkyMDQ4fQ.kGKMcy25tFVV08RmlYCxdoBbtXodriDCMhCJs8_PMQ4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURI}}user/google",
+							"host": [
+								"{{baseURI}}user"
+							],
+							"path": [
+								"google"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_12.001  Google Callback ile Token Yenileme",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURI}}user/google/callback",
+							"host": [
+								"{{baseURI}}user"
+							],
+							"path": [
+								"google",
+								"callback"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_13.001  Kimlik Doğrulaması ile Kullanıcı Bilgilerini Alma",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body contains 'Success' message\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    pm.expect(responseData.message).to.eql(\"Success\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YjA1Njc1ZmFhZjlkMWVkMTA2OWYzMCIsImlhdCI6MTc1ODE5MTIwOCwiZXhwIjoxNzU4MTkyMDQ4fQ.kGKMcy25tFVV08RmlYCxdoBbtXodriDCMhCJs8_PMQ4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURI}}user/me",
+							"host": [
+								"{{baseURI}}user"
+							],
+							"path": [
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_14.001  Kullanıcı Temasını Başarıyla Güncelleme",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body contains 'Successful update' message\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    pm.expect(responseData.message).to.eql(\"Success\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YjA1Njc1ZmFhZjlkMWVkMTA2OWYzMCIsImlhdCI6MTc1ODE5MjIzNiwiZXhwIjoxNzU4MTkzMDc2fQ.Bt7GkMpNU17mIr5vJ9o8RvZZrEfoOos1uGDKXsNWOrs",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"theme\": \"violet\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURI}}user/theme",
+							"host": [
+								"{{baseURI}}user"
+							],
+							"path": [
+								"theme"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_15.001  Kullanıcı Bilgilerini Başarıyla Güncelleme",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YjA1Njc1ZmFhZjlkMWVkMTA2OWYzMCIsImlhdCI6MTc1ODE5Mjc4OCwiZXhwIjoxNzU4MTkzNjI4fQ.VRZH2P8rYuBGvJ4wHEH2_wYwpswXHU8vwc1Kk3wXbgQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"avatar\": \"string\",\r\n  \"name\": \"MayBells\",\r\n  \"email\": \"mugeetik@gmail.com\",\r\n  \"password\": \"arc1649*\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURI}}user/update",
+							"host": [
+								"{{baseURI}}user"
+							],
+							"path": [
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_16.001  Başarılı Oturum Kapatma",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 204\tSuccessful logout\", function () {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YjA1Njc1ZmFhZjlkMWVkMTA2OWYzMCIsImlhdCI6MTc1ODE5MzUxNiwiZXhwIjoxNzU4MTk0MzU2fQ.I-Z4Hsjgx5sIf90hzWg1iocFeraL96ErQISWnOj589Q",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseURI}}user/logout",
+							"host": [
+								"{{baseURI}}user"
+							],
+							"path": [
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_17.001  Destek Talebini Başarıyla Gönderme",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\tSuccessful request\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YjA1Njc1ZmFhZjlkMWVkMTA2OWYzMCIsImlhdCI6MTc1ODE5NDEzMywiZXhwIjoxNzU4MTk0OTczfQ.OrokU9k_U2tKMCeQsyQ1l9cCqAWEAKBYbh3YpeimEB0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"mugeetik@gmail.com\",\r\n  \"message\": \"I'm using TaskPro for a while and it's gonna be great if I could upload my own background.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURI}}support",
+							"host": [
+								"{{baseURI}}support"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "API_Uygulama-içi-fonksiyonlar",
+			"item": [
+				{
+					"name": "TC_18.001  Kullanıcının Tüm Panolarını Görüntüleme",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\tSuccessful request\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YjA1Njc1ZmFhZjlkMWVkMTA2OWYzMCIsImlhdCI6MTc1ODE5NzQ5OCwiZXhwIjoxNzU4MTk4MzM4fQ.DygU92vg5ao5jIRoWBb8fLb9Dfh3cLMjSB1uA_ofseE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURI}}boards",
+							"host": [
+								"{{baseURI}}boards"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_19.001  Yeni Pano Oluşturma (Create a new Board)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\tNew Board Created\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YjA1Njc1ZmFhZjlkMWVkMTA2OWYzMCIsImlhdCI6MTc1ODE5Nzc4MSwiZXhwIjoxNzU4MTk4NjIxfQ.uM5M7Vgyjs4ipXkb8DxlKQJcQ1-0X-OPBpDzossCFA8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"New Boardt\",\r\n  \"icon\": \"star\",\r\n  \"background\": \"https://some-cloud-name.com/path/to/image/bg.jpg\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURI}}boards",
+							"host": [
+								"{{baseURI}}boards"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_20.001  Panonun Başlığını Güncelleme",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\tSuccessful Update\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YjA1Njc1ZmFhZjlkMWVkMTA2OWYzMCIsImlhdCI6MTc1ODIwNDk1MiwiZXhwIjoxNzU4MjA1NzkyfQ.-3pSLMndTMTyPXbxTALBRzJWD3Og0uAJrZSp8yWDJxk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"title\": \"New Panel\",\r\n        \"icon\": \"board8\",\r\n        \"background\": \"14\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURI}}boards/{{boardId}}",
+							"host": [
+								"{{baseURI}}boards"
+							],
+							"path": [
+								"{{boardId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_21.001  Pano Arka Planını Başarıyla Güncelleme",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\tSuccessful Update\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YjA1Njc1ZmFhZjlkMWVkMTA2OWYzMCIsImlhdCI6MTc1ODIwNDk1MiwiZXhwIjoxNzU4MjA1NzkyfQ.-3pSLMndTMTyPXbxTALBRzJWD3Og0uAJrZSp8yWDJxk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"background\": \"9\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURI}}boards/{{boardId}}",
+							"host": [
+								"{{baseURI}}boards"
+							],
+							"path": [
+								"{{boardId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_22.001  Panoyu Başarıyla Silme",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\tSuccessful Delete\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YjA1Njc1ZmFhZjlkMWVkMTA2OWYzMCIsImlhdCI6MTc1ODIwNTg4OCwiZXhwIjoxNzU4MjA2NzI4fQ.sV-Oduu1mWPscUNCNA3Bx-Yi_QhXP3pTRa9AhUbd-98",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseURI}}boards/{{boardId}}",
+							"host": [
+								"{{baseURI}}boards"
+							],
+							"path": [
+								"{{boardId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_23.001  Yeni Sütun Oluşturma",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201 New column created\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YjA1Njc1ZmFhZjlkMWVkMTA2OWYzMCIsImlhdCI6MTc1ODIwNjcyMSwiZXhwIjoxNzU4MjA3NTYxfQ.qyuBXZtu0X9W-RsgTa-l2d6CRTXnMqAZySa1FcOkt-o",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"ProjeSonu2\",\r\n  \"board\": \"68b056cdfaaf9d1ed1069f43\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURI}}columns",
+							"host": [
+								"{{baseURI}}columns"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_24.001  Sütun Başlığını Başarıyla Güncelleme",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 Successful Update\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YjA1Njc1ZmFhZjlkMWVkMTA2OWYzMCIsImlhdCI6MTc1ODIwNzY1OSwiZXhwIjoxNzU4MjA4NDk5fQ.4cNJMhhlzR33w158XAz02WG9EXJNQVysNFlQs6IhLR8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"Done\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURI}}columns/{{columnId}}",
+							"host": [
+								"{{baseURI}}columns"
+							],
+							"path": [
+								"{{columnId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_25.001  Sütunu Başarıyla Silme",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 Successful Delete\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YjA1Njc1ZmFhZjlkMWVkMTA2OWYzMCIsImlhdCI6MTc1ODIwNzY1OSwiZXhwIjoxNzU4MjA4NDk5fQ.4cNJMhhlzR33w158XAz02WG9EXJNQVysNFlQs6IhLR8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURI}}columns/{{columnId}}",
+							"host": [
+								"{{baseURI}}columns"
+							],
+							"path": [
+								"{{columnId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_26.001  Sütuna Yeni Görev Ekleme",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\tNew task created\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YjA1Njc1ZmFhZjlkMWVkMTA2OWYzMCIsImlhdCI6MTc1ODIwODU0MCwiZXhwIjoxNzU4MjA5MzgwfQ.emY3GOqSC9Jq-6TvvRo_6D23PerWeU5yewVb0uyw5QA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"Figure out what is swagger\",\r\n  \"description\": \"Я - умничка, сладкая булочка и прочитаю доки до сваггера))\",\r\n  \"deadline\": \"2023-07-21T20:57:15.000Z\",\r\n  \"priority\": \"high\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURI}}columns/{{columnID2}}/tasks",
+							"host": [
+								"{{baseURI}}columns"
+							],
+							"path": [
+								"{{columnID2}}",
+								"tasks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_27.001  Sütunun Sırasını Değiştirme",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\tSuccessful reorder\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YjA1Njc1ZmFhZjlkMWVkMTA2OWYzMCIsImlhdCI6MTc1ODIxMDY1NiwiZXhwIjoxNzU4MjExNDk2fQ.J-xy6pusaPc_ynV1LfZd8vZcflIqYmt_jio0F7yE8Jg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"newOrder\": 4\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURI}}columns/68cc1b52faaf9d1ed106af62/order",
+							"host": [
+								"{{baseURI}}columns"
+							],
+							"path": [
+								"68cc1b52faaf9d1ed106af62",
+								"order"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_28.001  Görev Bilgilerini Başarıyla Güncelleme",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\tSuccessful update\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YjA1Njc1ZmFhZjlkMWVkMTA2OWYzMCIsImlhdCI6MTc1ODIxNjUzNCwiZXhwIjoxNzU4MjE3Mzc0fQ.5-ph0kGsLvZMLi75pS6SViPwOQzOkph8OJBYSE7uHHs",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"Figure out what is swagger\",\r\n  \"description\": \"Я - умничка, сладкая булочка и прочитаю доки до сваггера, а также протестирую swagger editor\",\r\n  \"deadline\": \"22.07.2023\",\r\n  \"priority\": \"low\",\r\n  \"column\": \"68cc1b52faaf9d1ed106af62\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURI}}tasks/68cc22a2faaf9d1ed106afac",
+							"host": [
+								"{{baseURI}}tasks"
+							],
+							"path": [
+								"68cc22a2faaf9d1ed106afac"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_29.001  Görevi Başka Sütuna Başarıyla Taşıma",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\tSuccessful update\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YjA1Njc1ZmFhZjlkMWVkMTA2OWYzMCIsImlhdCI6MTc1ODIxNzE0OCwiZXhwIjoxNzU4MjE3OTg4fQ.mPgQMDCSVBjegovW7i088SlGqQvxCHx9VO1xRua9DZc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"column\": \"68cc1b52faaf9d1ed106af62\",\r\n  \"newOrder\": 3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURI}}tasks/{{taskId}}",
+							"host": [
+								"{{baseURI}}tasks"
+							],
+							"path": [
+								"{{taskId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_30.001  Görev Kartını Başarıyla Silme",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\tSuccessful delete\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YjA1Njc1ZmFhZjlkMWVkMTA2OWYzMCIsImlhdCI6MTc1ODIxNzE0OCwiZXhwIjoxNzU4MjE3OTg4fQ.mPgQMDCSVBjegovW7i088SlGqQvxCHx9VO1xRua9DZc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseURI}}tasks/{{taskId}}",
+							"host": [
+								"{{baseURI}}tasks"
+							],
+							"path": [
+								"{{taskId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURI",
+			"value": ""
+		},
+		{
+			"key": "boardId",
+			"value": ""
+		},
+		{
+			"key": "columnId",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "columnID2",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "taskId",
+			"value": "",
+			"type": "default"
+		}
+	]
+}
